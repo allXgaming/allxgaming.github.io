@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi-Fi | Elite Gaming Server</title>
+    <style>
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #9600ff;
+            --neon-pink: #ff00aa;
+            --dark-bg: #0a0a14;
+            --darker-bg: #05050c;
+            --text-light: #e0e0ff;
+            --text-dim: #a0a0c0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(150, 0, 255, 0.2) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(0, 240, 255, 0.2) 0%, transparent 30%),
+                linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 9rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(150, 0, 255, 0.5);
+            letter-spacing: -0.03em;
+            animation: pulse 2.5s infinite alternate;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            bottom: -10px;
+            left: 0;
+            border-radius: 4px;
+            filter: blur(2px);
+            opacity: 0.7;
+        }
+        
+        .status {
+            font-size: 2rem;
+            margin: 2rem 0;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            padding-right: 0.5em;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+        
+        .timer {
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            color: var(--neon-pink);
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(255, 0, 170, 0.5);
+        }
+        
+        .timer span {
+            display: inline-block;
+            min-width: 80px;
+            position: relative;
+        }
+        
+        .timer span::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+        
+        .open-btn {
+            font-size: 2rem;
+            padding: 1rem 3rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(150, 0, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: none; /* Initially hidden */
+        }
+        
+        .open-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+        }
+        
+        .open-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .open-btn:hover::before {
+            left: 0;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 0;
+        }
+        
+        .footer a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: var(--neon-blue);
+        }
+        
+        .footer a:hover::after {
+            width: 100%;
+        }
+        
+        .corner-decoration {
+            position: fixed;
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .corner-tl {
+            top: 0;
+            left: 0;
+            border-top: 3px solid var(--neon-blue);
+            border-left: 3px solid var(--neon-blue);
+            border-radius: 20px 0 0 0;
+        }
+        
+        .corner-tr {
+            top: 0;
+            right: 0;
+            border-top: 3px solid var(--neon-purple);
+            border-right: 3px solid var(--neon-purple);
+            border-radius: 0 20px 0 0;
+        }
+        
+        .corner-bl {
+            bottom: 0;
+            left: 0;
+            border-bottom: 3px solid var(--neon-purple);
+            border-left: 3px solid var(--neon-purple);
+            border-radius: 0 0 0 20px;
+        }
+        
+        .corner-br {
+            bottom: 0;
+            right: 0;
+            border-bottom: 3px solid var(--neon-blue);
+            border-right: 3px solid var(--neon-blue);
+            border-radius: 0 0 20px 0;
+        }
+        
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 30px rgba(150, 0, 255, 0.5);
+                transform: scale(1);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(0, 240, 255, 0.7), 0 0 80px rgba(150, 0, 255, 0.5);
+                transform: scale(1.02);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 4rem;
+            }
+            
+            .status {
+                font-size: 1.2rem;
+                margin: 1rem 0;
+                letter-spacing: 0.3em;
+            }
+            
+            .timer {
+                font-size: 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            .timer span {
+                min-width: 50px;
+            }
+            
+            .timer span::after {
+                font-size: 0.6rem;
+                bottom: -15px;
+            }
+            
+            .open-btn {
+                font-size: 1.2rem;
+                padding: 0.8rem 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            .footer {
+                gap: 1rem;
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+            
+            .corner-decoration {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="corner-decoration corner-tl"></div>
+    <div class="corner-decoration corner-tr"></div>
+    <div class="corner-decoration corner-bl"></div>
+    <div class="corner-decoration corner-br"></div>
+    
+    <div class="container">
+        <h1 class="logo">Hi-Fi</h1>
+        <div class="status">Coming Soon</div>
+        <div class="timer">
+            <span id="days" data-label="days">00</span>:
+            <span id="hours" data-label="hours">00</span>:
+            <span id="minutes" data-label="minutes">00</span>:
+            <span id="seconds" data-label="seconds">00</span>
+        </div>
+        <button class="open-btn" id="openBtn">OPEN</button>
+    </div>
+    
+    <div class="footer">
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">Policy</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create particle effect
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+            document.body.appendChild(particlesContainer);
+            
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 5 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = i % 2 === 0 ? 'var(--neon-blue)' : 'var(--neon-purple)';
+                particle.style.borderRadius = '50%';
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Animation
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * -20;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Add CSS for particle animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% {
+                        transform: translate(0, 0) rotate(0deg);
+                        opacity: ${Math.random() * 0.5 + 0.1};
+                    }
+                    50% {
+                        opacity: ${Math.random() * 0.3 + 0.1};
+                    }
+                    100% {
+                        transform: translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Timer functionality
+            const statusElement = document.querySelector('.status');
+            const timerElement = document.querySelector('.timer');
+            const openBtn = document.getElementById('openBtn');
+            
+            // Set your target date and time here (ISO format: YYYY-MM-DDTHH:MM:SS)
+            const startDate = new Date("2025-05-28T09:07:50"); // When server opens
+            const endDate = new Date("2025-05-28T09:08:00");   // When server closes
+            
+            function updateTimer() {
+                const now = new Date();
+                const startDiff = startDate - now;
+                const endDiff = endDate - now;
+                
+                if (now >= startDate && now <= endDate) {
+                    // Server is LIVE - show OPEN button
+                    openBtn.style.display = 'block';
+                    statusElement.style.display = 'none';
+                    timerElement.style.display = 'none';
+                } 
+                else if (now < startDate) {
+                    // Server is COMING SOON - show timer
+                    openBtn.style.display = 'none';
+                    statusElement.style.display = 'block';
+                    timerElement.style.display = 'block';
+                    
+                    // Update timer values
+                    const days = Math.floor(startDiff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((startDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((startDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((startDiff % (1000 * 60)) / 1000);
+                    
+                    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                }
+                else {
+                    // Server is CLOSED
+                    openBtn.style.display = 'none';
+                    statusElement.textContent = "COMING SOON";
+                    statusElement.style.color = "var(--neon-blue)";
+                    statusElement.style.display = 'block';
+                    timerElement.style.display = 'none';
+                }
+            }
+            
+            // Open button functionality
+            openBtn.addEventListener('click', function() {
+                window.location.href = "hifi.html";
+            });
+            
+            // Initial call
+            updateTimer();
+            
+            // Update every second
+            const timerInterval = setInterval(updateTimer, 1000);
+        });
+    </script>
+</body>
+</html>
