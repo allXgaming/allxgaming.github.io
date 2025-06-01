@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AllXGaming RPS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Rock Paper Scissors</h1>
+    <input id="roomInput" placeholder="Enter Room Code" />
+    <button onclick="joinRoom()">Join Room</button>
+
+    <div id="gameSection" style="display:none;">
+      <h2 id="playerLabel">You are: </h2>
+      <div class="buttons">
+        <button onclick="makeMove('rock')">🪨 Rock</button>
+        <button onclick="makeMove('paper')">📄 Paper</button>
+        <button onclick="makeMove('scissors')">✂️ Scissors</button>
+      </div>
+      <p id="status">Waiting for opponent...</p>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
