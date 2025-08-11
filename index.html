@@ -28,7 +28,7 @@
         
         html, body {
             height: 100%;
-            overflow-x: hidden;
+            overflow: hidden; /* Hide scrollbars */
         }
 
         body {
@@ -42,25 +42,19 @@
                 linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
         }
         
-        .main-content-wrapper {
-            flex: 1 0 auto; /* This makes the wrapper take up all available space */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure it's at least the full screen height */
-        }
-
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            flex: 1;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             z-index: 1;
+            padding-bottom: 150px; /* Space for footer and ads */
         }
         
         .logo { font-size: 9rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink)); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 30px rgba(150, 0, 255, 0.5); letter-spacing: -0.03em; animation: pulse 2.5s infinite alternate; position: relative; }
@@ -73,33 +67,38 @@
         .open-btn:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(0, 240, 255, 0.7); }
         .open-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink)); transition: all 0.4s ease; z-index: -1; }
         .open-btn:hover::before { left: 0; }
-        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; } /* Changed z-index */
-        .footer { padding: 1rem 2rem; text-align: center; font-size: 0.9rem; color: var(--text-dim); display: flex; justify-content: center; gap: 2.5rem; position: relative; z-index: 1; }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        
+        .bottom-content {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer { padding: 1rem 2rem; text-align: center; font-size: 0.9rem; color: var(--text-dim); display: flex; justify-content: center; gap: 2.5rem; width: 100%; }
         .footer a { color: var(--text-dim); text-decoration: none; transition: all 0.3s ease; position: relative; font-weight: 500; letter-spacing: 0.05em; padding: 0.5rem 0; }
         .footer a::after { content: ""; position: absolute; width: 0; height: 2px; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); bottom: 0; left: 0; transition: width 0.3s ease; }
         .footer a:hover { color: var(--neon-blue); }
         .footer a:hover::after { width: 100%; }
+        
+        .ads-container { width: 100%; padding-bottom: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+        
         .corner-decoration { position: fixed; width: 150px; height: 150px; pointer-events: none; z-index: 0; }
         .corner-tl { top: 0; left: 0; border-top: 3px solid var(--neon-blue); border-left: 3px solid var(--neon-blue); border-radius: 20px 0 0 0; }
         .corner-tr { top: 0; right: 0; border-top: 3px solid var(--neon-purple); border-right: 3px solid var(--neon-purple); border-radius: 0 20px 0 0; }
         .corner-bl { bottom: 0; left: 0; border-bottom: 3px solid var(--neon-purple); border-left: 3px solid var(--neon-purple); border-radius: 0 0 0 20px; }
         .corner-br { bottom: 0; right: 0; border-bottom: 3px solid var(--neon-blue); border-right: 3px solid var(--neon-blue); border-radius: 0 0 20px 0; }
-        
-        .ads-container {
-            width: 100%;
-            padding: 2rem 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-shrink: 0; /* Prevents the ad container from shrinking */
-        }
 
         @keyframes pulse { 0% { text-shadow: 0 0 30px rgba(150, 0, 255, 0.5); transform: scale(1); } 100% { text-shadow: 0 0 50px rgba(0, 240, 255, 0.7), 0 0 80px rgba(150, 0, 255, 0.5); transform: scale(1.02); } }
         
         @media (max-width: 768px) {
-            .logo { font-size: 4rem; } .status { font-size: 1.2rem; margin: 1rem 0; letter-spacing: 0.3em; } .timer { font-size: 1.5rem; margin: 1rem 0; } .timer span { min-width: 50px; } .timer span::after { font-size: 0.6rem; bottom: -15px; } .open-btn { font-size: 1.2rem; padding: 0.8rem 1.5rem; margin: 1rem 0; } .footer { gap: 1rem; flex-wrap: wrap; padding: 1rem; } .corner-decoration { width: 70px; height: 70px; }
+            .container { padding-bottom: 120px; }
+            .logo { font-size: 4rem; } .status { font-size: 1.2rem; margin: 1rem 0; letter-spacing: 0.3em; } .timer { font-size: 1.5rem; margin: 1rem 0; } .timer span { min-width: 50px; } .timer span::after { font-size: 0.6rem; bottom: -15px; } .open-btn { font-size: 1.2rem; padding: 0.8rem 1.5rem; margin: 1rem 0; } .footer { gap: 1rem; flex-wrap: wrap; padding: 0.5rem 1rem; } .corner-decoration { width: 70px; height: 70px; }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -111,41 +110,27 @@
     <div class="corner-decoration corner-bl"></div>
     <div class="corner-decoration corner-br"></div>
     
-    <!-- This wrapper ensures the main content and footer take up the full screen height -->
-    <div class="main-content-wrapper">
-        <div class="container">
-            <h1 class="logo">Hi-Fi</h1>
-            <div class="status">Coming Soon</div>
-            <div class="timer">
-                <span id="days" data-label="days">00</span>:
-                <span id="hours" data-label="hours">00</span>:
-                <span id="minutes" data-label="minutes">00</span>:
-                <span id="seconds" data-label="seconds">00</span>
-            </div>
-            <button class="open-btn" id="openBtn">OPEN</button>
+    <div class="container">
+        <h1 class="logo">Hi-Fi</h1>
+        <div class="status">Coming Soon</div>
+        <div class="timer">
+            <span id="days" data-label="days">00</span>:
+            <span id="hours" data-label="hours">00</span>:
+            <span id="minutes" data-label="minutes">00</span>:
+            <span id="seconds" data-label="seconds">00</span>
         </div>
-        
+        <button class="open-btn" id="openBtn">OPEN</button>
+    </div>
+    
+    <div class="bottom-content">
         <div class="footer">
             <a href="TermsandConditions(lu-1).html">Terms</a>
             <a href="contact(lu-1).html">Contact</a>
             <a href="privacy(lu-1).html">Policy</a>
         </div>
-    </div>
-
-    <!-- Ads are placed outside the main wrapper, so they appear only after scrolling -->
-    <div class="ads-container">
-        <script async="async" data-cfasync="false" src="//breakdowninsinuateeliza.com/68f3f6c8a96ca25b750e159dbf1c0aa5/invoke.js"></script>
-        <div id="container-68f3f6c8a96ca25b750e159dbf1c0aa5"></div>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'cf9758f0b1770442a6f3b336a3f50eea',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 468,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//breakdowninsinuateeliza.com/cf9758f0b1770442a6f3b336a3f50eea/invoke.js"></script>
+        <div class="ads-container">
+            <!-- Ads will be placed here by script -->
+        </div>
     </div>
 
     <script>
@@ -213,4 +198,24 @@
         });
     </script>
 </body>
+
+<!-- Your Ad Scripts placed at the end for better performance -->
+<script async="async" data-cfasync="false" src="//breakdowninsinuateeliza.com/68f3f6c8a96ca25b750e159dbf1c0aa5/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'cf9758f0b1770442a6f3b336a3f50eea',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//breakdowninsinuateeliza.com/cf9758f0b1770442a6f3b336a3f50eea/invoke.js"></script>
+<script>
+    // Move the ad container created by the script into our designated div
+    const adContainer = document.getElementById('container-68f3f6c8a96ca25b750e159dbf1c0aa5');
+    if (adContainer) {
+        document.querySelector('.ads-container').appendChild(adContainer);
+    }
+</script>
 </html>
